@@ -5,17 +5,27 @@ These are the functions which show the player what is happening in the game.
 """
 
 from __future__ import print_function
-import buy_menu
-import data_constructor
+
+# DEBUG
+# import pdb
+
 import datetime
 import json
 import os
-import placement
-import printer
 import time
+
+import buy_menu
+
+import data_constructor
+
+import jsonpickle
+
+import placement
+
+import printer
+
 import update
-# DEBUG
-# import pdb
+
 
 try:
     input = raw_input
@@ -25,10 +35,9 @@ except NameError:
 
 def store_data(data):
     """Purrsist the data."""
-    # DEBUG
-    # pdb.set_trace()
     data_file = os.getcwd() + '/var/data.json'
     with open(data_file, 'w') as f:
+        jsonpickle.encode(data)
         json.dump(data, f)
 
 
@@ -37,6 +46,7 @@ def load_data():
     data_file = os.getcwd() + '/var/data.json'
     with open(data_file, 'r') as f:
         data = json.load(f)
+        # data = jsonpickle.decode(json_data)
     return data
 
 
@@ -57,7 +67,7 @@ def banner():
 
 """
 TODO: this should be remade but where we just take the time diff
-and do itterative deletions to it until we get to some minimal
+and do iterative deletions to it until we get to some minimal
 amt and store it, rather than this time left precomputation
 """
 
@@ -156,7 +166,6 @@ def main():
             printer.PColors, printer.PColors)
         printer.prompt(data["prefix"], actions.keys())
         inp = input("{0} Choose an action! ".format(data["prefix"]))
-        # pdb.set_trace()
         if inp in actions:
             actions[inp](data)
             continue
